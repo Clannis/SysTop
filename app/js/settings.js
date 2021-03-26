@@ -1,4 +1,5 @@
 const settingsForm = document.getElementById('settings-form')
+const nav = document.getElementById('nav')
 
 // Get settings
 ipcRenderer.on('settings:get', (e, settings) => {
@@ -30,3 +31,8 @@ function showAlert(message) {
 
     setTimeout(() => alert.classList.add('hide'), 3000)
 }
+
+// Toggle Nav
+ipcRenderer.on('nav:toggle', () => {
+    nav.classList.toggle('hide')
+})
