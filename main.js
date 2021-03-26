@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const log = require('electron-log')
 const Store = require('./Store')
 
@@ -45,7 +45,7 @@ app.on('ready', () => {
   createMainWindow()
 
   mainWindow.webContents.on('dom-ready', () => {
-    mainWindow.webContents.send('settings:get', store.get('settings'))
+  mainWindow.webContents.send('settings:get', store.get('settings'))
   })
 
   const mainMenu = Menu.buildFromTemplate(menu)
@@ -71,6 +71,12 @@ const menu = [
       ]
     : []),
 ]
+
+// Set settings
+ipcMain.on('settings:set', (e, settings) => {
+  store.set('settings', settings)
+  mainWindow.webContents.send('settings:get', store.get('settings'))
+})
 
 app.on('window-all-closed', () => {
   if (!isMac) {
