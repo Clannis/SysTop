@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron')
-
 const settingsForm = document.getElementById('settings-form')
 
 // Get settings
