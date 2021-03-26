@@ -22,7 +22,7 @@ class Store {
 
 function parseDataFile(filePath, defaults) {
     try {
-        return JSON.stringify(fs.readFileSync(filePath))
+        return JSON.parse(fs.readFileSync(filePath, {encoding:'utf8'}))
     } catch (err) {
         return defaults
     }
