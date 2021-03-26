@@ -5,7 +5,7 @@ const MainWindow = require('./MainWindow')
 const AppTray = require('./AppTray')
 
 // Set env
-process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = 'production'
 
 const isDev = process.env.NODE_ENV !== 'production' ? true : false
 const isMac = process.platform === 'darwin' ? true : false
@@ -30,6 +30,7 @@ function createMainWindow() {
 
 app.on('ready', () => {
   createMainWindow()
+  app.dock.hide()
 
   mainWindow.webContents.on('dom-ready', () => {
   mainWindow.webContents.send('settings:get', store.get('settings'))
