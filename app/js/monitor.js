@@ -1,16 +1,20 @@
 const path = require('path')
 const { ipcRenderer } = require('electron')
+const bytes = require('bytes');
+const pretty = require('prettysize');
 const osu = require('node-os-utils')
 const cpu = osu.cpu
 const mem = osu.mem
 const os = osu.os
 
 let cpuOverload
+let memOverload
 let alertFrequency
 
 // Get settings & values
 ipcRenderer. on('settings:get', (e, settings) => {
     cpuOverload = +settings.cpuOverload
+    memOverload = +settings.memOverload
     alertFrequency = +settings.alertFrequency
 })
 
@@ -45,6 +49,36 @@ setInterval(() => {
     // CPU Free
     cpu.free().then(info => {
         document.getElementById('cpu-free').innerText = info + '%'
+    })
+
+    // Mem Used
+    mem.used().then( info => {
+        document.getElementById('mem-usage').innerText = `${pretty(bytes(`${info.usedMemMb}mb`))} or ${(info.usedMemMb / info.totalMemMb * 100).toFixed(2)}%`
+        document.getElementById('mem-progress').style.width = (info.usedMemMb / info.totalMemMb * 100) +'%'
+
+        // Make progress bar red if overload
+        if ((info.usedMemMb / info.totalMemMb * 100) >= memOverload) {
+            document.getElementById('mem-progress').style.background = 'red'
+        } else {
+            document.getElementById('mem-progress').style.background = '#30c88b'
+        }
+
+        // Check overload
+        if ((info.usedMemMb / info.totalMemMb * 100) >= memOverload && runNotify(alertFrequency)) {
+            notifyUser({
+                title: 'Memory Overload',
+                body: `Memory is over ${memOverload}%`,
+                icon: path.join(__dirname, 'img', 'icon.png')
+            })
+
+            // Log timestamp of when last notified
+            localStorage.setItem('lastNotify', +new Date())
+        }
+    })
+
+    // Mem Free
+    mem.free().then( info => {
+        document.getElementById('mem-free').innerText = `${pretty(bytes(`${info.freeMemMb}mb`))} or ${(info.freeMemMb / info.totalMemMb * 100).toFixed(2)}%`
     })
 
     //Uptime

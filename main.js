@@ -19,6 +19,7 @@ const store = new Store({
   defaults: {
     settings: {
       cpuOverload: 80,
+      memOverload: 80,
       alertFrequency: 5
     }
   }

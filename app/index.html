@@ -17,6 +17,13 @@
 					<li><strong>CPU Usage: </strong><span id="cpu-usage"></span></li>
 					<li><strong>CPU Free: </strong><span id="cpu-free"></span></li>
 				</ul>
+				<div class="progress-bar">
+					<div class="progress" id="mem-progress"></div>
+				</div>
+				<ul>
+					<li><strong>Memory Usage: </strong><span id="mem-usage"></span></li>
+					<li><strong>Memory Free: </strong><span id="mem-free"></span></li>
+				</ul>
 				<div id="cpu-model"></div>
 			</div>
 			<div class="content">
@@ -35,6 +42,10 @@
 					<div class="form-control">
 						<label for="cpu-overload">CPU Overload Warning %</label>
 						<input type="number" id="cpu-overload" />
+					</div>
+					<div class="form-control">
+						<label for="mem-overload">Memory Overload Warning %</label>
+						<input type="number" id="mem-overload" />
 					</div>
 					<div class="form-control">
 						<label for="alert-frequency">Alert Frequency (In Minutes)</label>
