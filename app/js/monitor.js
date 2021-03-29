@@ -22,9 +22,9 @@ ipcRenderer. on('settings:get', (e, settings) => {
 setInterval(() => {
     // CPU Usage
     cpu.usage().then(info => {
-        document.getElementById('cpu-usage').innerText = info + '%'
+        document.getElementById('cpu-usage').innerText = info.toFixed(2) + '%'
 
-        document.getElementById('cpu-progress').style.width = info +'%'
+        document.getElementById('cpu-progress').style.width = info.toFixed(2) +'%'
 
         // Make progress bar red if overload
         if (info >= cpuOverload) {
